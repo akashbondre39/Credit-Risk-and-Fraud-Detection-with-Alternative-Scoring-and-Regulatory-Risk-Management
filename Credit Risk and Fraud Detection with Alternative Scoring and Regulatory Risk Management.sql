@@ -217,7 +217,7 @@ WITH customer_base AS (
     WHERE c.credit_score < 650 OR c.credit_score IS NULL
 ),
 
--- Transaction Behavior Analysis
+-- i.Transaction Behavior Analysis
 transaction_metrics AS (
     SELECT 
         ct.customer_id,
@@ -233,7 +233,7 @@ transaction_metrics AS (
     GROUP BY ct.customer_id
 ),
 
--- Alternative Credit Payment History
+-- ii. Alternative Credit Payment History
 alt_credit_analysis AS (
     SELECT 
         customer_id,
@@ -247,7 +247,7 @@ alt_credit_analysis AS (
     GROUP BY customer_id
 ),
 
--- Final Score Calculation with Rebalanced Weights
+-- iii. Final Score Calculation with Rebalanced Weights
 score_components AS (
     SELECT 
         cb.customer_id,
@@ -279,7 +279,7 @@ score_components AS (
     LEFT JOIN alt_credit_analysis ac ON cb.customer_id = ac.customer_id
 )
 
--- Final Alternative Credit Score Calculation and Risk Category Assignment
+-- iv.Final Alternative Credit Score Calculation and Risk Category Assignment
 SELECT 
     sc.customer_id,
     cb.employment_status,
@@ -330,7 +330,7 @@ ORDER BY (sc.income_score + sc.transaction_score + sc.alt_credit_score) DESC;
 
 --2.Loan Stacking Analysis
 
--- 1. Active Loan Summary Per Customer
+-- i. Active Loan Summary Per Customer
 WITH ActiveLoans AS (
     SELECT 
         customer_id,
@@ -346,7 +346,7 @@ WITH ActiveLoans AS (
     GROUP BY customer_id
 ),
 
--- 2. Monthly Debt Service Ratio
+-- ii. Monthly Debt Service Ratio
 MonthlyObligations AS (
     SELECT 
         l.customer_id,
@@ -357,7 +357,7 @@ MonthlyObligations AS (
     GROUP BY l.customer_id
 ),
 
--- 3. Recent Loan Applications (Last 30 Days)
+-- iii. Recent Loan Applications (Last 30 Days)
 RecentApplications AS (
     SELECT 
         customer_id,
@@ -368,7 +368,7 @@ RecentApplications AS (
     GROUP BY customer_id
 ),
 
--- 4. Risk Signals Analysis
+-- iv. Risk Signals Analysis
 RiskMetrics AS (
     SELECT 
         rs.customer_id,
@@ -380,7 +380,7 @@ RiskMetrics AS (
     GROUP BY rs.customer_id
 ),
 
--- 5. Alternative Credit Performance
+-- v. Alternative Credit Performance
 AltCreditMetrics AS (
     SELECT 
         customer_id,
@@ -392,7 +392,7 @@ AltCreditMetrics AS (
     GROUP BY customer_id
 ),
 
--- 6. Transaction Behavior Analysis
+-- vi. Transaction Behavior Analysis
 TransactionMetrics AS (
     SELECT 
         customer_id,
@@ -404,7 +404,7 @@ TransactionMetrics AS (
     GROUP BY customer_id
 ),
 
--- 7. Main Analysis CTE
+-- vii. Main Analysis CTE
 MainAnalysis AS (
     SELECT 
         c.customer_id,
